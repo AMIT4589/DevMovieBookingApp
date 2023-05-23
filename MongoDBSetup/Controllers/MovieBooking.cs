@@ -4,58 +4,58 @@ using MongoDBSetup.Services;
 
 namespace MovieBookingApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/moviebooking")]
     [ApiController]
-    public class StudentsController : ControllerBase
+    public class MovieBooking : ControllerBase
     {
-        private readonly IStudentService _StudentService;
+        private readonly IMovieService _MovieService;
 
-        public StudentsController(IStudentService studentService)
+        public MovieBooking(IMovieService movieService)
         {
-            _StudentService = studentService;
+            _MovieService = movieService;
         }
 
         // GET: api/<StudentsController>
         [HttpGet]
-        public ActionResult<List<Student>> Get()
+        public ActionResult<List<Movie>> Get()
         {
-            return Ok(_StudentService.Get());
+            return Ok(_MovieService.Get());
         }
 
         // GET api/<StudentsController>/5
         [HttpGet("{id}")]
-        public ActionResult<Student> Get(string id)
+        public ActionResult<Movie> Get(string id)
         {
-            var student =  _StudentService.Get(id);
+            var student = _MovieService.Get(id);
             if (student == null) return NotFound($"Student with ID '${id}' not found!");
             return student;
         }
 
         // POST api/<StudentsController>
         [HttpPost]
-        public ActionResult<Student> Post([FromBody] Student student)
+        public ActionResult<Movie> Post([FromBody] Movie student)
         {
-            _StudentService.Create(student);
-            return CreatedAtAction(nameof(Get), new {id = student.Id}, student);
+            _MovieService.Create(student);
+            return CreatedAtAction(nameof(Get), new { id = student.MovieId }, student);
         }
 
         // PUT api/<StudentsController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(string id, [FromBody] Student student)
+        public ActionResult Put(string id, [FromBody] Movie student)
         {
-            var existingStudent = _StudentService.Get(id);
+            var existingStudent = _MovieService.Get(id);
             if (existingStudent == null) return NotFound($"Student with ID '${id}' not found!");
-            _StudentService.Update(id, student);
-            return CreatedAtAction(nameof(Get), new { id = existingStudent.Id }, student);
+            _MovieService.Update(id, student);
+            return CreatedAtAction(nameof(Get), new { id = existingStudent.MovieId }, student);
         }
 
         // DELETE api/<StudentsController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(string id)
         {
-            var existingStudent = _StudentService.Get(id);
+            var existingStudent = _MovieService.Get(id);
             if (existingStudent == null) return NotFound($"Student with ID '${id}' not found!");
-            _StudentService.Delete(id);
+            _MovieService.Delete(id);
             return StatusCode(204, $"Student with ID '${id}' deleted.");
         }
     }
